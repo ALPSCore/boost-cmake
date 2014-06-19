@@ -13,7 +13,7 @@ else()
 endif()
 
 # compile using c++ compiler only
-project(ALPS-boost-cmake CXX)
+project(boost-cmake CXX)
 
 # add modules from cmake directory
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
@@ -40,9 +40,9 @@ endif()
 
 # check for MPI
 list(FIND Boost_COMPONENTS mpi has_no_mpi)
-if (NOT ${has_no_mpi} EQUAL -1) # e.g. if we have mpi 
+if (NOT ${has_no_mpi} EQUAL -1) # e.g. if we have mpi component 
     set(BOOST_HAS_MPI true)
-    find_package(MPI)
+    find_package(MPI REQUIRED)
     add_definitions(${MPI_CXX_COMPILE_FLAGS}  ${MPI_C_COMPILE_FLAGS})
     include_directories(${MPI_CXX_INCLUDE_PATH})
     link_libraries(${MPI_CXX_LIBRARIES})
@@ -53,9 +53,9 @@ endif()
 
 # check for Python
 list(FIND Boost_COMPONENTS python has_python)
-if (NOT ${has_no_python} EQUAL -1) # e.g. if we have mpi 
+if (NOT ${has_no_python} EQUAL -1) # e.g. if we have python component
     set(BOOST_HAS_PYTHON true)
-    find_package(PythonLibs)
+    find_package(PythonLibs REQUIRED)
     include_directories(${PYTHON_INCLUDE_DIRS})
     link_libraries(${PYTHON_LIBRARIES})
 else()
@@ -66,7 +66,6 @@ endif()
 # include headers from "boost" subdirectory
 include_directories(${Boost_ROOT_DIR})
 
-add_definitions(-DBOOST_CXX11_NO_DELETED_FUNCTIONS)
 # build boost libraries and install them along with corresponding headers
 foreach(boost_lib ${Boost_COMPONENTS})
     list(FIND boost_all_libs ${boost_lib} has_boost_lib)
@@ -88,22 +87,16 @@ foreach(boost_lib ${Boost_COMPONENTS})
             filterlist("${SOURCES}" mpi filtered)  
             set(${SOURCES} ${filtered})
         endif()
-        if (${boost_lib} STREQUAL thread)
-            #filterlist("${SOURCES}" v2 filtered)  
-            #set(${SOURCES} ${filtered})
-            message(STATUS ${SOURCES})
-        endif()
-
-        # compile library
+        # compile component
         add_library(boost_${boost_lib} STATIC ${SOURCES})
-        # install library
+        # install component
         install(TARGETS boost_${boost_lib} DESTINATION lib)
         # install corresponding headers
         install(DIRECTORY ${Boost_ROOT_DIR}/boost/${boost_lib} DESTINATION include/boost FILES_MATCHING PATTERN "*.hpp" PATTERN "*.ipp" PATTERN "*.h")
     endif (${has_boost_lib} EQUAL -1) 
 endforeach(boost_lib ${Boost_COMPONENTS})
 
-# install header-only parts (exclude library headers)
+# install header-only parts (exclude already installed component headers)
 
 foreach(boost_lib ${boost_all_libs})
     list(APPEND all_header_excludes ${all_headers_excludes} PATTERN ${boost_lib} EXCLUDE) 
