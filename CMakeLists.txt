@@ -1,5 +1,6 @@
 # 
 # Cmake boost compilation script
+# (C) A. Antipov, 2014 
 # 
 
 cmake_minimum_required (VERSION 2.8)
@@ -43,7 +44,7 @@ if (NOT ${has_no_mpi} EQUAL -1) # e.g. if we have mpi
     set(BOOST_HAS_MPI true)
     find_package(MPI)
     add_definitions(${MPI_CXX_COMPILE_FLAGS}  ${MPI_C_COMPILE_FLAGS})
-    include_directories(${MPI_INCLUDE_DIRS})
+    include_directories(${MPI_CXX_INCLUDE_PATH})
     link_libraries(${MPI_CXX_LIBRARIES})
 else()
     list(APPEND boost_lib_glob_exclude mpi)
