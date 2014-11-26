@@ -1,0 +1,13 @@
+#%Module1.0
+
+set     name        boost_cmake
+conflict boost
+set     root        @CMAKE_INSTALL_PREFIX@
+
+
+setenv      BOOST_DIR   $root
+setenv      BOOST_ROOT  $root
+setenv      BOOST_LIB   $root/lib
+setenv      BOOST_INC  $root/include
+prepend-path    LD_LIBRARY_PATH $root/lib
+

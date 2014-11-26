@@ -109,3 +109,5 @@ install(
     ${all_header_excludes} # exclude everything from exclude 
     )
 
+### Additional installation files
+configure_file("${CMAKE_SOURCE_DIR}/misc/boost_cmake.lmod.in" "${CMAKE_BINARY_DIR}/boost_cmake.lmod")
