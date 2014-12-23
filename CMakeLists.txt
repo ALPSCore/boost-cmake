@@ -53,9 +53,10 @@ endif()
 
 # check for Python
 list(FIND Boost_COMPONENTS python has_python)
-if (NOT ${has_no_python} EQUAL -1) # e.g. if we have python component
+if (NOT ${has_python} EQUAL -1) # e.g. if we have python component
     set(BOOST_HAS_PYTHON true)
     find_package(PythonLibs REQUIRED)
+    message(STATUS "Python includes: ${PYTHON_INCLUDE_DIRS}")
     include_directories(${PYTHON_INCLUDE_DIRS})
     link_libraries(${PYTHON_LIBRARIES})
 else()
