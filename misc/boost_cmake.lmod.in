@@ -2,7 +2,7 @@
 
 set     name        boost_cmake
 conflict boost
-set     root        @CMAKE_INSTALL_PREFIX@
+set     root        "@CMAKE_INSTALL_PREFIX@"
 
 
 setenv      BOOST_DIR   $root
