@@ -90,6 +90,7 @@ foreach(boost_lib ${Boost_COMPONENTS})
         endif()
         # compile component
         add_library(boost_${boost_lib} STATIC ${SOURCES})
+        set_target_properties(boost_${boost_lib} PROPERTIES POSITION_INDEPENDENT_CODE ON)
         # install component
         install(TARGETS boost_${boost_lib} DESTINATION lib)
         # install corresponding headers
